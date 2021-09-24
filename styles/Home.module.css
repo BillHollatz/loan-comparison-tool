@@ -119,3 +119,12 @@
     flex-direction: column;
   }
 }
+
+.loans {
+	float: left;
+	width: 80%;
+}
+.login {
+	float: left;
+	width: 30%;
+}

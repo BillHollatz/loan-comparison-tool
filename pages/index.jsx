@@ -6,6 +6,7 @@ import Script from 'next/script'
 import { useState } from 'react'
 import ListOfLoans from '../components/List'
 import LoanItem from '../components/List'
+import Link from 'next/link'
 
 
 
@@ -32,7 +33,6 @@ export default function Home() {
 		</Head>
 		
 		<body>
-
 			<h2>Loan comparison tool</h2>
 
 
@@ -48,7 +48,13 @@ export default function Home() {
 					List.innerHTML += "<div>Hello JavaScript!</div>"
 				}
 			</script>
-
+			
+			<h3>Login to save your loan comparisons</h3>
+			<Link href='Login'>
+			<button onclick="window.location.href='/Login'">Login</button>
+			</Link>
+			<button onclick="window.location.href='/Register'">Register</button>
+			
 		</body>
 			
 			
@@ -57,4 +63,3 @@ export default function Home() {
   )
 }
 
-//ReactDOM.render(List, document.getElementById('root'));
