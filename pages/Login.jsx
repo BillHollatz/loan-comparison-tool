@@ -28,9 +28,9 @@ export default function Login(){
 	<>
 		<h2>Loan comparison tool Login</h2>
 		<form onSubmit={Log}>
-			<label for="username">Username:</label><br/>
+			<label htmlFor="username">Username:</label><br/>
 			<input type="text" id="username" name="username"/><br/>
-			<label for="pwd">Password:</label><br/>
+			<label htmlFor="pwd">Password:</label><br/>
 			<input type="password" id="pwd" name="pwd"/><br/><br/>
 			<input type="submit" value="Submit"/>
 		</form>
