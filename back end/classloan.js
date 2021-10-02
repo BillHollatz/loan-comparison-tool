@@ -1,3 +1,4 @@
+import MonthList from 'classmonthlist'
 class Loan {
 constructor(Ammount, rate, term) {
 this.Ammount = Ammount;
@@ -7,16 +8,16 @@ let C = this.rate/1200;
 	this.MonthlyPayment =(this.Ammount*(C*(Math.pow(1+C,360))))/((Math.pow(1+C,360))-1);
 	this.Months = new MonthList(this.Ammount,this.MonthlyPayment,C)
 }
-getMonthlyPayment: function(){
+function getMonthlyPayment(){
 	return this.MonthlyPayment;
 }
-getAmmount: function(){
+function getAmmount(){
 	return this.Ammount;
 }
-getRate: function() {
+function getRate() {
 	return this.Rate;
 }
-getTerm : function() {
+function getTerm() {
 	return this.Term;
 }
 

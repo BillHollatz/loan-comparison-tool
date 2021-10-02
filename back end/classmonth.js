@@ -4,7 +4,7 @@ constructor (Start, StandardPayment,C){
 	this.StandardPayment = StandardPayment;
 	this.Monthrate = Start*C;
 }
-getStart :Function (){
+Function getStart(){
 	
 }
 }

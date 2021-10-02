@@ -1,3 +1,4 @@
+import Month from 'classmonth'
 class MonthList {
 	constructor(Ammount,MonthlyPayment,C){
 		this.head = null;
@@ -8,7 +9,7 @@ class MonthList {
 		this.C = C;
 	}
 
-append(){
+Function append(){
 	left = this.tail.getEnd();
 	const n = new Month(this.Ammount,this.MonthlyPayment,this.C);
 	if(this.size === 0){
