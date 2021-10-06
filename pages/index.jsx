@@ -8,9 +8,10 @@ import { useState } from 'react'
 import ListOfLoans from '../components/List'
 import LoanItem from '../components/List'
 import Link from 'next/link'
+//import Loan from '../back end/classloan'
 
-
-
+//var x = new Loan(1, 2, 3)
+//console.log(x)
 
 var List = dynamic(() => import('../components/List'),{
 	ssr: false
@@ -20,7 +21,7 @@ var List = dynamic(() => import('../components/List'),{
 
 
 function addLoan() {
-	console.log("why")
+	
 					List.innerHTML += <LoanItem/>
 					//ListOfLoans.push()
 				}

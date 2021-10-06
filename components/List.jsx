@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 var ListOfLoans = [1,2,3];
 var i = 4;
 
-/*
+
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
@@ -30,10 +30,11 @@ class LoanItem extends Component {
 					method: 'POST'
 				}
 			)
+			
 			const result = await res.json()
 			console.log(result)
-			this.state.monthly = "wow"
-			ReactDOM.render(this.button , this.button);
+			//this.state.monthly = "wow"
+			//ReactDOM.render(this.button , this.button);
 		};
 	}
 	
@@ -72,7 +73,7 @@ export default function List() {
 		</ul>
 	)
 }
-*/
+/*
 function LoanItem(Id) {
 	var monthly = null
 	//const item = 
@@ -141,3 +142,4 @@ export default function List() {
 		</ul>
 	)
 }
+*/

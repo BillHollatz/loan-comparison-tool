@@ -1,4 +1,4 @@
-import Month from 'classmonth'
+import Month from './classmonth'
 class MonthList {
 	constructor(Ammount,MonthlyPayment,C){
 		this.head = null;
@@ -9,7 +9,7 @@ class MonthList {
 		this.C = C;
 	}
 
-function append(){
+append(){
 	left = this.tail.getEnd();
 	const n = new Month(this.Ammount,this.MonthlyPayment,this.C);
 	if(this.size === 0){
@@ -23,13 +23,13 @@ function append(){
 	}
 	this.size++;
 }
-function getHead() {
+getHead() {
 	return this.Head;
 }
-function getTail() {
+getTail() {
 	this.Tail;
 }
-function ModifyPayment(IDstart, IDend,ExtraPayment) {
+ModifyPayment(IDstart, IDend,ExtraPayment) {
 	begin = this.Head;
 	while (begin.getID() < IDstart){
 		begin = begin.getNext();
@@ -45,3 +45,5 @@ function ModifyPayment(IDstart, IDend,ExtraPayment) {
 	
 }
 }
+
+export default MonthList

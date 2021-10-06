@@ -7,46 +7,48 @@ constructor (Start, StandardPayment,C){
 	this.MonthlyPrincipal = StandardPayment - MonthlyInterest;
 	this.End = Start - MonthlyPrincipal;
 }
-function setSart(start){
+setSart(start){
 	this.Start = Start;
 }
-function getStart(){
+getStart(){
 	return this.start
 }
-function setID(id){
+setID(id){
 	this.ID = id;
 }
-function getID(){
+getID(){
 	return this.ID;
 }
-function getEnd() {
+getEnd() {
 	return this.End;
 }
-function getStandardPayment(){
+getStandardPayment(){
 	return this.StandardPayment;
 }
-function getExtraPayment(){
+getExtraPayment(){
 	return this.ExtraPayment;
 }
-function getMonthlyInterest(){
+getMonthlyInterest(){
 	return this.MonthlyInterest;
 }
-function getMonthlyPrincipal() {
+getMonthlyPrincipal() {
 	return this.MonthlyPrincipal;
 }
-function getNext() {
+getNext() {
 	return this.Next;
 }
-function getPrev() {
+getPrev() {
 	return this.Prev;
 }
-function setExtraPayment(extra) {
+setExtraPayment(extra) {
 	this.ExtraPayment = extra;
 	this.MonthlyPayment = this.MonthlyPayment + extra;
 	this.End = this.Start - this.MonthlyPayment;
 	this.Next.setSart(this.End) 
 }
-function getExtraPayment() {
+getExtraPayment() {
 	return this.ExtraPayment;
 }
 }
+
+export default Month
