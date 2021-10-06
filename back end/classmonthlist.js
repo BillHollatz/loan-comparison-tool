@@ -9,7 +9,7 @@ class MonthList {
 		this.C = C;
 	}
 
-Function append(){
+function append(){
 	left = this.tail.getEnd();
 	const n = new Month(this.Ammount,this.MonthlyPayment,this.C);
 	if(this.size === 0){
@@ -22,5 +22,26 @@ Function append(){
 	t.next = this.tail;
 	}
 	this.size++;
+}
+function getHead() {
+	return this.Head;
+}
+function getTail() {
+	this.Tail;
+}
+function ModifyPayment(IDstart, IDend,ExtraPayment) {
+	begin = this.Head;
+	while (begin.getID() < IDstart){
+		begin = begin.getNext();
+	}
+	while (begin.getID() < IDend){
+		begin.setExtraPayment(ExtraPayment)
+		begin = begin.getNext();
+	}
+	while (begin.getID() != this.tail){
+		begin.setExtraPayment(0)
+		begin = begin.getNext();
+	}
+	
 }
 }
