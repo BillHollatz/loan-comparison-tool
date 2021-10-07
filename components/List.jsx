@@ -68,7 +68,7 @@ export default function List() {
 		<ul>
 			{ListOfLoans.map((item) => (
 					
-					<LoanItem ID={item}/>
+					<LoanItem key={item}/>
 				))}	
 				
 			
