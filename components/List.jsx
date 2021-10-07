@@ -33,7 +33,9 @@ class LoanItem extends Component {
 			
 			const result = await res.json()
 			console.log(result)
-			//this.state.monthly = "wow"
+			this.setState({
+				monthly: "Monthly Payment: "+result.toString()
+			})
 			//ReactDOM.render(this.button , this.button);
 		};
 	}

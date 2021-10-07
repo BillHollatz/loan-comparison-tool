@@ -8,6 +8,6 @@ export default function handler(req, res) {
 	const Rate = Number(req.body.Rate)
 	const Term = Number(req.body.Term)
 	let x = new Loan(Amount, Rate, Term)
-	let y =  x.getAmmount()
-	res.status(200).json({Key, x})
+	let y =  x.getMonthlyPayment()
+	res.status(200).json(y)
 }
