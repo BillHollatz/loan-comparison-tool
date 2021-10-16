@@ -9,6 +9,11 @@ constructor(Ammount, Rate, Term) {
 	this.x = C;
 	this.MonthlyPayment =(Ammount*(C*(Math.pow(1+C,360))))/((Math.pow(1+C,360))-1);
 	this.Months = new MonthList(this.Ammount,this.MonthlyPayment,C)
+	A = this.Ammount;
+	while(this.Months.getTail().getEnd() > 0){
+		this.Months.append(A);
+		A = this.Months.getTail().getEnd();
+	}
 }
 getMonthlyPayment(){
 	return this.MonthlyPayment;
@@ -21,6 +26,10 @@ getRate() {
 }
 getTerm() {
 	return this.Term;
+}
+ModifyMonth(IDstart, IDend,ExtraPayment,RepeatYearly) {
+	this.Months.ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly);
+	
 }
 
 }
