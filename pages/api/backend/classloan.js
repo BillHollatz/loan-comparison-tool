@@ -6,8 +6,8 @@ constructor(Ammount, Rate, Term) {
 	this.Term = Term;
 	
 	let C = Rate/1200;
-	this.x = C;
-	this.MonthlyPayment =(Ammount*(C*(Math.pow(1+C,360))))/((Math.pow(1+C,360))-1);
+	this.x = Math.pow(1+C,Term*12);
+	this.MonthlyPayment =(Ammount*(C*(Math.pow(1+C,Term*12))))/((Math.pow(1+C,Term*12))-1);
 	this.Months = new MonthList(this.Ammount,this.MonthlyPayment,C)
 }
 getMonthlyPayment(){

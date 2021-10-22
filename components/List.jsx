@@ -4,25 +4,118 @@ import ReactDOM from "react-dom";
 var ListOfLoans = [1,2,3];
 var i = 4;
 
+class ModificationItem extends Component{
+	constructor(props){
+		super(props)
+		this.Id = props.ID;
+	}
+	
+	render() {
+		return (
+			<ul id="a">
+				<label htmlFor="Loan amount">Extra amount $</label>
+				<input id="Amount" name="Amount" type="number"  required />
+				
+				<ul>
+					<label htmlFor="Loan start">from</label>
+					<select id="monthS"  required>
+						<option value="January">January</option>
+						<option value="Febuary">Febuary</option>
+						<option value="March">March</option>
+						<option value="April">April</option>
+						<option value="May">May</option>
+						<option value="June">June</option>
+						<option value="July">July</option>
+						<option value="August">August</option>
+						<option value="September">September</option>
+						<option value="October">October</option>
+						<option value="November">November</option>
+						<option value="December">December</option>
+					</select>
+					<label htmlFor="Loan start">of (year)</label>
+					<input id="yearS" type="number"  required />
+				</ul>
+				
+				<ul>
+					<label htmlFor="Loan start">until</label>
+					<select id="monthE"  required>
+						<option value="January">January</option>
+						<option value="Febuary">Febuary</option>
+						<option value="March">March</option>
+						<option value="April">April</option>
+						<option value="May">May</option>
+						<option value="June">June</option>
+						<option value="July">July</option>
+						<option value="August">August</option>
+						<option value="September">September</option>
+						<option value="October">October</option>
+						<option value="November">November</option>
+						<option value="December">December</option>
+					</select>
+					<label htmlFor="Loan start">of (year)</label>
+					<input id="yearE" type="number"  required />
+				</ul>
+				
+				<label htmlFor="repeat">Repeat yearly</label>
+				<input id="repeat" type="checkbox"  />
+				
+			</ul>
+				
+				
+			
+		);
+	}
+}
 
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
 		this.Id = props.ID;
-		this.button = <button id='a' type="submit">Calculate</button>
+		this.numMods = 0;
+		this.button = <button id='a' type="submit" onClick={this.calc}>Calculate</button>
+		this.addMod = <button onClick={this.addModification}>Add Extra Payment</button>
 		this.state = {
-			monthly: null
+			monthly: null ,
+			Mods: null
+		};
+		this.listOfModifications = []
+		this.addModification = async event =>{
+			event.preventDefault()
+			
+			this.numMods = this.numMods + 1
+			console.log(this.numMods)
+			this.listOfModifications.push(<ModificationItem key={this.numMods}/>)
+			var m = this.state.monthly
+			this.setState({
+				monthly: m ,
+				Mods: this.listOfModifications
+			})
 		};
 		this.calc = async event => {
 			event.preventDefault()
-		
+			var LMODS = []
+			var MODS = event.target.children[9]
+			for (let i = 0; i<MODS.childElementCount; i++){
+				LMODS.push({
+					Amount: MODS.children[i].children[1].value,
+					SM : MODS.children[i].children[2].children[1].value,
+					SY : MODS.children[i].children[2].children[3].value,
+					EM : MODS.children[i].children[3].children[1].value,
+					EY : MODS.children[i].children[3].children[3].value,
+					Repeat : MODS.children[i].children[5].checked
+				})
+			}
+			console.log(MODS)
+			
 			const res = await fetch('/api/LoanInputs',
 				{
 					body: JSON.stringify({
 						Key: event.target.getAttribute('id'),
 						Amount: event.target.Amount.value,
 						Rate: event.target.Rate.value,
-						Term: event.target.Term.value
+						Term: event.target.Term.value,
+						Mods: LMODS
+						
 					}),
 					headers: {
 						'Content-Type': 'application/json'
@@ -34,9 +127,10 @@ class LoanItem extends Component {
 			const result = await res.json()
 			console.log(result)
 			this.setState({
-				monthly: "Monthly Payment: "+result.toString()
+				monthly: "Monthly Payment: "+result.toString() ,
+				Mods: this.listOfModifications
 			})
-			//ReactDOM.render(this.button , this.button);
+			
 		};
 	}
 	
@@ -44,6 +138,7 @@ class LoanItem extends Component {
 	render() {
 		return (
 			<form onSubmit={this.calc} id={this.Id}>
+			
 				<label htmlFor="Loan amount">Loan amount $</label>
 				<input id="Amount" name="Amount" type="number"  required />
 				
@@ -52,10 +147,34 @@ class LoanItem extends Component {
 				
 				<label htmlFor="Loan term">Loan term length in years</label>
 				<input id="Term" type="number"  required />
+				<ul>
+					<label htmlFor="Loan start">Loan start month</label>
+					<select id="month"  required>
+						<option value="1">January</option>
+						<option value="Febuary">Febuary</option>
+						<option value="March">March</option>
+						<option value="April">April</option>
+						<option value="May">May</option>
+						<option value="June">June</option>
+						<option value="July">July</option>
+						<option value="August">August</option>
+						<option value="September">September</option>
+						<option value="October">October</option>
+						<option value="November">November</option>
+						<option value="December">December</option>
+					</select>
+					<label htmlFor="Loan start">year</label>
+					<input id="year" type="number"  required />
+				</ul>
+				
 				
 				{this.button}
 				
 				<label>{this.state.monthly}</label>
+				<ul id="mods">{this.state.Mods}</ul>
+				<button onClick={this.addModification}>Add Extra Payment</button>
+				
+		
 			</form>
 		);
 	}
