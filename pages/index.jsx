@@ -18,7 +18,7 @@ var List = dynamic(() => import('../components/List'),{
 })
 
 
-
+//dovene added
 
 function addLoan() {
 	
