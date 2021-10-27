@@ -14,7 +14,7 @@ const uiConfig = {
   // GitHub as the only included Auth Provider.
   // You could add and configure more here!
   
-  signInOptions: [auth.GithubAuthProvider.PROVIDER_ID],
+  signInOptions: [auth],
 };
 
 function SignInScreen() {
