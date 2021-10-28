@@ -7,14 +7,28 @@ import app from "../firebase/clientApp";
 
 
 const auth = getAuth(app)
-// Configure FirebaseUI.
-const uiConfig = {
-  // Redirect to / after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: "/",
-  // GitHub as the only included Auth Provider.
-  // You could add and configure more here!
+var firebase = require('firebase');
+var firebaseui = require('firebaseui');
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+ui.start('#firebaseui-auth-container',{
+  callbacks: {
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      // User successfully signed in.
+      // Return type determines whether we continue the redirect automatically
+      // or whether we leave that to developer to handle.
+      return true;
+    },
+    uiShown: function() {
+      // The widget is rendered.
+      // Hide the loader.
+      document.getElementById('loader').style.display = 'none';
+    }
+  },
+  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+  signInFlow: 'popup',
+  signInSuccessUrl: '<url-to-redirect-to-on-success>',
   
-  signInOptions: [auth],
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
 };
 
 function SignInScreen() {
@@ -22,7 +36,8 @@ function SignInScreen() {
     <div>
       <h1>Pineapple Login</h1>
       <p>Please sign-in:</p>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+      <div id="firebaseui-auth-container"></div>
+	  <div id="loader">Loading...</div>
     </div>
   );
 }
