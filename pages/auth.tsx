@@ -29,7 +29,7 @@ ui.start('#firebaseui-auth-container',{
   signInSuccessUrl: '<url-to-redirect-to-on-success>',
   
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-};
+});
 
 function SignInScreen() {
   return (
