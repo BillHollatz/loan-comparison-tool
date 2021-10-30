@@ -9,9 +9,9 @@ class MonthList {
 		this.C = C;
 	}
 
-append(){
+append(ammount){
 	left = this.tail.getEnd();
-	const n = new Month(this.Ammount,this.MonthlyPayment,this.C);
+	const n = new Month(ammount,this.MonthlyPayment,this.C);
 	if(this.size === 0){
 		this.head = n;
 		this.tail = n;
@@ -29,14 +29,25 @@ getHead() {
 getTail() {
 	this.Tail;
 }
-ModifyPayment(IDstart, IDend,ExtraPayment) {
+ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly) {
 	begin = this.Head;
-	while (begin.getID() < IDstart){
-		begin = begin.getNext();
+	if(RepeatYearly){
+		while (begin.getID()% 12 < IDstart){
+			begin = begin.getNext();
+		}
+		while (begin.getID()% 12 < IDend){
+			begin.setExtraPayment(ExtraPayment)
+			begin = begin.getNext();
+		}
 	}
-	while (begin.getID() < IDend){
-		begin.setExtraPayment(ExtraPayment)
-		begin = begin.getNext();
+	else{
+		while (begin.getID() < IDstart){
+			begin = begin.getNext();
+		}
+		while (begin.getID() < IDend){
+			begin.setExtraPayment(ExtraPayment)
+			begin = begin.getNext();
+		}
 	}
 	while (begin.getID() != this.tail){
 		begin.setExtraPayment(0)
