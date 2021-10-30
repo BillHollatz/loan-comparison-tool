@@ -4,8 +4,8 @@ constructor (Start, StandardPayment,C){
 	this.StandardPayment = StandardPayment;
 	this.MonthlyPayment = StandardPayment;
 	this.MonthlyInterest = Start*C;
-	this.MonthlyPrincipal = StandardPayment - MonthlyInterest;
-	this.End = Start - MonthlyPrincipal;
+	this.MonthlyPrincipal = StandardPayment - this.MonthlyInterest;
+	this.End = Start - this.MonthlyPrincipal;
 }
 setSart(start){
 	this.Start = Start;
@@ -33,6 +33,9 @@ getMonthlyInterest(){
 }
 getMonthlyPrincipal() {
 	return this.MonthlyPrincipal;
+}
+setNext(item){
+	this.Next = item;
 }
 getNext() {
 	return this.Next;

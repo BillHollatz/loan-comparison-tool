@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-
+import MonthItem from "./MonthItem";
 
 var i = 4;
 
@@ -131,16 +131,26 @@ class LoanItem extends Component {
 			)
 			
 			const result = await res.json()
-			this.LoanObject = result
-			//console.log(this.LoanObject.MonthlyPayment)
+			this.LoanObject = result.x
+			console.log(this.LoanObject)
 			this.setState({
 				monthly: "Monthly Payment: "+this.LoanObject.MonthlyPayment.toString() ,
 				Mods: this.listOfModifications
 			})
-			var iter = this.LoanObject.Months.Head
-			console.log(iter)
+			var iter = this.LoanObject.Months.head
+			console.log(iter.Start.toString())
 			while(iter != null){
-				this.ListOfMonths.push(<MonthItem Month = {iter}/>)
+				this.ListOfMonths.push(
+					<MonthItem 
+						Start= {iter.Start.toString()} 
+						SP = {iter.StandardPayment.toString()} 
+						MP = {iter.MonthlyPayment.toString()} 
+						MI = {iter.MonthlyInterest.toString()} 
+						MPR={iter.MonthlyPrincipal.toString()} 
+						End={iter.End.toString()}
+					/>
+				)
+				iter = iter.Next
 			}
 		};
 		

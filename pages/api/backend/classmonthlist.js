@@ -10,24 +10,28 @@ class MonthList {
 	}
 
 append(ammount){
-	left = this.tail.getEnd();
+	//console.log(this.size)
 	const n = new Month(ammount,this.MonthlyPayment,this.C);
 	if(this.size === 0){
+		
 		this.head = n;
 		this.tail = n;
+		console.log(this.tail)
 	}
 	else {
+		//console.log('getend 3');
+		//var left = this.tail.getEnd();
 		const t = this.tail;
 		this.tail = n;
-	t.next = this.tail;
+		t.setNext(this.tail);
 	}
 	this.size++;
 }
 getHead() {
-	return this.Head;
+	return this.head;
 }
 getTail() {
-	this.Tail;
+	return this.tail;
 }
 ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly) {
 	begin = this.Head;
