@@ -1,18 +1,20 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
+import Link from 'next/link'
 
-var ListOfLoans = [1,2,3];
+
 var i = 4;
 
 class ModificationItem extends Component{
 	constructor(props){
 		super(props)
+		console.log(props)
 		this.Id = props.ID;
 	}
 	
 	render() {
 		return (
-			<ul id="a">
+			<ul id={this.Id}>
 				<label htmlFor="Loan amount">Extra amount $</label>
 				<input id="Amount" name="Amount" type="number"  required />
 				
@@ -70,9 +72,10 @@ class ModificationItem extends Component{
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
-		this.Id = props.ID;
+		this.Id = props.goog;
+		console.log(props);
 		this.numMods = 0;
-		this.button = <button id='a' type="submit" onClick={this.calc}>Calculate</button>
+		this.button = <button goog='a' type="submit" onClick={this.calc}>Calculate</button>
 		this.addMod = <button onClick={this.addModification}>Add Extra Payment</button>
 		this.state = {
 			monthly: null ,
@@ -83,7 +86,7 @@ class LoanItem extends Component {
 			event.preventDefault()
 			
 			this.numMods = this.numMods + 1
-			console.log(this.numMods)
+			
 			this.listOfModifications.push(<ModificationItem key={this.numMods}/>)
 			var m = this.state.monthly
 			this.setState({
@@ -97,6 +100,7 @@ class LoanItem extends Component {
 			var MODS = event.target.children[9]
 			for (let i = 0; i<MODS.childElementCount; i++){
 				LMODS.push({
+					key : i,
 					Amount: MODS.children[i].children[1].value,
 					SM : MODS.children[i].children[2].children[1].value,
 					SY : MODS.children[i].children[2].children[3].value,
@@ -110,7 +114,7 @@ class LoanItem extends Component {
 			const res = await fetch('/api/LoanInputs',
 				{
 					body: JSON.stringify({
-						Key: event.target.getAttribute('id'),
+						Key: this.Id,
 						Amount: event.target.Amount.value,
 						Rate: event.target.Rate.value,
 						Term: event.target.Term.value,
@@ -137,7 +141,7 @@ class LoanItem extends Component {
 	
 	render() {
 		return (
-			<form onSubmit={this.calc} id={this.Id}>
+			<form onSubmit={this.calc} goog={this.Id}>
 			
 				<label htmlFor="Loan amount">Loan amount $</label>
 				<input id="Amount" name="Amount" type="number"  required />
@@ -169,7 +173,9 @@ class LoanItem extends Component {
 				
 				
 				{this.button}
-				
+				<Link href={'/Loan'+this.Id} rel="noopener noreferrer" target="_blank">
+					<button>Detailed List of monthly payments</button>
+				</Link>
 				<label>{this.state.monthly}</label>
 				<ul id="mods">{this.state.Mods}</ul>
 				<button onClick={this.addModification}>Add Extra Payment</button>
@@ -181,17 +187,42 @@ class LoanItem extends Component {
 }
 
 
+class Lis extends Component {
+	constructor(props){
+		super(props)
+		this.numLoans = 3;
+		this.ListOfLoans = [<LoanItem key='1' goog='1'/>,<LoanItem key='2' goog='2'/>,<LoanItem key='3' goog={this.numLoans}/>];
+		this.state = {
+			Loans: this.ListOfLoans
+		};
+		this.addLoan = async event =>{
+			event.preventDefault()
+			
+			this.numLoans = this.numLoans + 1
+			//console.log(this.numLoans)
+			this.ListOfLoans.push(<LoanItem key={this.numLoans} goog={this.numLoans.toString()}/>)
+			
+			var x = [...this.ListOfLoans]
+			this.setState({
+				Loans: x
+			})
+			
+			
+		};
+	}
+	render(){
+		return(
+			<ul>				
+				{this.state.Loans}
+				<button onClick={this.addLoan}>Add Loan</button>
+			</ul>
+		)
+	}
+}
 
 export default function List() {
 	return(
-		<ul>
-			{ListOfLoans.map((item) => (
-					
-					<LoanItem key={item}/>
-				))}	
-				
-			
-		</ul>
+		<Lis/>
 	)
 }
 /*

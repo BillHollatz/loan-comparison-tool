@@ -6,7 +6,7 @@ import Script from 'next/script'
 import React, { Component } from "react"
 import { useState } from 'react'
 import ListOfLoans from '../components/List'
-import LoanItem from '../components/List'
+//import List from '../components/List'
 import Link from 'next/link'
 //import Loan from '../back end/classloan'
 
@@ -18,13 +18,9 @@ var List = dynamic(() => import('../components/List'),{
 })
 
 
-//dovene added
 
-function addLoan() {
-	
-					List.innerHTML += <LoanItem/>
-					//ListOfLoans.push()
-				}
+
+
 
 export default function Home() {
   return (
@@ -42,14 +38,10 @@ export default function Home() {
 				
 			
 			
-			<button onClick={addLoan()}>Add Loan</button>
 			
 			
-			<script id="addLoan" async> 
-				{
-					List.innerHTML += "<div>Hello JavaScript!</div>"
-				}
-			</script>
+			
+			
 			
 			<h3>Login to save your loan comparisons</h3>
 			<Link href='Login'>
