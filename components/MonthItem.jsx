@@ -4,12 +4,12 @@ import ReactDOM from "react-dom";
 class ModificationItem extends Component{
 	constructor(props){
 		super(props)
-		this.start = props.Start
+		this.Start = props.Start
 	}
 	render() {
 		return (
 			<>
-				<p>{this.start}</p>
+				<p>{this.Start}</p>
 			</>
 		)
 	}
