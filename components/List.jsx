@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import Link from 'next/link'
 
 
 var i = 4;
@@ -81,7 +80,9 @@ class LoanItem extends Component {
 			monthly: null ,
 			Mods: null
 		};
+		this.LoanObject = null;
 		this.listOfModifications = []
+		this.ListOfMonths = []
 		this.addModification = async event =>{
 			event.preventDefault()
 			
@@ -95,6 +96,7 @@ class LoanItem extends Component {
 			})
 		};
 		this.calc = async event => {
+			
 			event.preventDefault()
 			var LMODS = []
 			var MODS = event.target.children[9]
@@ -129,13 +131,41 @@ class LoanItem extends Component {
 			)
 			
 			const result = await res.json()
-			console.log(result)
+			this.LoanObject = result
+			//console.log(this.LoanObject.MonthlyPayment)
 			this.setState({
-				monthly: "Monthly Payment: "+result.toString() ,
+				monthly: "Monthly Payment: "+this.LoanObject.MonthlyPayment.toString() ,
 				Mods: this.listOfModifications
 			})
-			
+			var iter = this.LoanObject.Months.Head
+			console.log(iter)
+			while(iter != null){
+				this.ListOfMonths.push(<MonthItem Month = {iter}/>)
+			}
 		};
+		
+		this.toggleMonthList = async event =>{
+			event.preventDefault()
+			
+			this.MonthsDisplayed = !this.MonthsDisplayed
+			if(this.MonthsDisplayed){
+				var m = this.state.monthly
+				var M = this.state.Mods
+				this.setState({
+					monthly: m,
+					Mods: M,
+					Months: this.ListOfMonths
+				})
+			}else{
+				var m = this.state.monthly
+				var M = this.state.Mods
+				this.setState({
+					monthly: m,
+					Mods: M,
+					Months: null
+				})
+			}
+		}
 	}
 	
 	
@@ -173,11 +203,12 @@ class LoanItem extends Component {
 				
 				
 				{this.button}
-				<Link href={'/Loan'+this.Id} rel="noopener noreferrer" target="_blank">
-					<button>Detailed List of monthly payments</button>
-				</Link>
+				
+				<button onClick={this.toggleMonthList}>Detailed List of monthly payments</button>
+				
 				<label>{this.state.monthly}</label>
 				<ul id="mods">{this.state.Mods}</ul>
+				<ul>{this.state.Months}</ul>
 				<button onClick={this.addModification}>Add Extra Payment</button>
 				
 		

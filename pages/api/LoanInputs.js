@@ -11,5 +11,5 @@ export default function handler(req, res) {
 	let x = new Loan(Amount, Rate, Term)
 	let y =  x.getMonthlyPayment()
 	
-	res.status(200).json(Key)
+	res.status(200).json(x)
 }
