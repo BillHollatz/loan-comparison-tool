@@ -1,4 +1,6 @@
-import {initializeApp, getApps} from "firebase/app";
+import * as firebase from "firebase/app";
+import * as firebaseui from 'firebaseui';
+import 'firebaseui/dist/firebaseui.css';
 import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
@@ -11,10 +13,8 @@ const clientCredentials = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (!getApps().length) {
-  
-}
-const app = initializeApp(clientCredentials);
+
+const app = firebase.initializeApp(clientCredentials);
 
 const db = getFirestore(app)
 const auth = getAuth(app)
