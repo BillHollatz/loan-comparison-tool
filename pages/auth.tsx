@@ -1,13 +1,14 @@
 // auth.tsx
-import {getAuth} from "firebase/auth";
-
+import {getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import "firebase/auth";
+//import firebase from 'firebase/app';
 import React from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import app from "../firebase/clientApp";
 
 
 const auth = getAuth(app)
-
+/*
 createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
@@ -43,8 +44,9 @@ onAuthStateChanged(auth, (user) => {
     // ...
   }
 });
-
-
+*/
+var firebase = require(firebase);
+var firebaseui = require('firebaseui');
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var uiConfig = {
   callbacks: {
@@ -76,8 +78,7 @@ var uiConfig = {
 };
 ui.start('#firebaseui-auth-container',uiConfig);
 /*
-var firebase = require('firebase');
-var firebaseui = require('firebaseui');
+
 
 ui.start('#firebaseui-auth-container',{
   callbacks: {
