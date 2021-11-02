@@ -131,7 +131,7 @@ class LoanItem extends Component {
 			)
 			
 			const result = await res.json()
-			this.LoanObject = result.x
+			this.LoanObject = result
 			console.log(this.LoanObject)
 			this.setState({
 				monthly: "Monthly Payment: "+this.LoanObject.MonthlyPayment.toString() ,
@@ -181,7 +181,7 @@ class LoanItem extends Component {
 	
 	render() {
 		return (
-			<form onSubmit={this.calc} goog={this.Id}>
+			<form onSubmit={this.calc} goog={this.Id} >
 			
 				<label htmlFor="Loan amount">Loan amount $</label>
 				<input id="Amount" name="Amount" type="number"  required />
@@ -217,8 +217,8 @@ class LoanItem extends Component {
 				<button onClick={this.toggleMonthList}>Detailed List of monthly payments</button>
 				
 				<label>{this.state.monthly}</label>
-				<ul id="mods">{this.state.Mods}</ul>
-				<ul>{this.state.Months}</ul>
+				<ul id="mods" >{this.state.Mods}</ul>
+				<ul >{this.state.Months}</ul>
 				<button onClick={this.addModification}>Add Extra Payment</button>
 				
 		
