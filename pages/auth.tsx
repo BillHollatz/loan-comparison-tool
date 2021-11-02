@@ -12,7 +12,7 @@ import 'firebaseui/dist/firebaseui.css';
 import {getFirestore} from "firebase/firestore";
 
 const clientCredentials = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  apiKey: 'AIzaSyAgyhZgXfQDHs86o_S_2wVjwlKDqvmfPWA',//process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
@@ -76,8 +76,9 @@ const LoginFinal: FC<Props> =({firebaseClient, config}) => {
 	const loadFirebaseui = useCallback(async () => {
 		const firebaseui = await import("firebaseui");
 		const firebaseUi = 
-			firebaseui.auth.AuthUI.getInstance() ||
-			new firebaseui.auth.AuthUI(firebase.app().auth());
+			firebaseui.auth.AuthUI.getInstance(); //||
+			//new firebaseui.auth.AuthUI(auth);
+			console.log(firebase.auth)
 		var uiConfig = {
 		callbacks: {
 			signInSuccessWithAuthResult: function(authResult, redirectUrl) {
@@ -95,10 +96,11 @@ const LoginFinal: FC<Props> =({firebaseClient, config}) => {
 		  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
 		  signInFlow: 'popup',
 		  signInSuccessUrl: '<url-to-redirect-to-on-success>',
+		  
 		  signInOptions: [
 			// Leave the lines as is for the providers you want to offer your users.
 			
-			firebase.auth.EmailAuthProvider.PROVIDER_ID
+			(<any> firebase.auth.EmailAuthProvider).PROVIDER_ID
 		   
 		  ],
 		  // Terms of service url.
@@ -113,14 +115,14 @@ const LoginFinal: FC<Props> =({firebaseClient, config}) => {
 		loadFirebaseui();
 		
 	}, []);
-	return (
-    <div>
-      <h1>Pineapple Login</h1>
-      <p>Please sign-in:</p>
-      <div id="firebaseui-auth-container"></div>
-	  <div id="loader">Loading...</div>
-    </div>
-  );
+	return(
+		<React.Fragment>
+		  <h1>Pineapple Login</h1>
+		  <p>Please sign-in:</p>
+		  <div id="firebaseui-auth-container"></div>
+		  <div id="loader">Loading...</div>
+		</React.Fragment>
+		);
 };
 /*
 
