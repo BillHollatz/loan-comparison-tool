@@ -1,20 +1,19 @@
 class Month{
-constructor (Start, StandardPayment,C){
+constructor (Start, StandardPayment,C, id){
 	this.Start = Start;
 	this.StandardPayment = StandardPayment;
 	this.MonthlyPayment = StandardPayment;
+	this.ExtraPayment = 0;
 	this.MonthlyInterest = Start*C;
 	this.MonthlyPrincipal = StandardPayment - this.MonthlyInterest;
 	this.End = Start - this.MonthlyPrincipal;
+	this.ID = id
 }
-setSart(start){
-	this.Start = Start;
+setStart(start){
+	this.Start = start;
 }
 getStart(){
-	return this.start
-}
-setID(id){
-	this.ID = id;
+	return this.Start;
 }
 getID(){
 	return this.ID;
@@ -44,10 +43,12 @@ getPrev() {
 	return this.Prev;
 }
 setExtraPayment(extra) {
-	this.ExtraPayment = extra;
+	this.ExtraPayment = this.ExtraPayment + extra;
 	this.MonthlyPayment = this.MonthlyPayment + extra;
 	this.End = this.Start - this.MonthlyPayment;
-	this.Next.setSart(this.End) 
+	if(this.Next != null){
+		this.Next.setStart(this.End);
+	}
 }
 getExtraPayment() {
 	return this.ExtraPayment;

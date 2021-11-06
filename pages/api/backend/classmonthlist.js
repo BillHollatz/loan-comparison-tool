@@ -11,12 +11,12 @@ class MonthList {
 
 append(ammount){
 	//console.log(this.size)
-	const n = new Month(ammount,this.MonthlyPayment,this.C);
+	const n = new Month(ammount,this.MonthlyPayment,this.C, this.size);
 	if(this.size === 0){
 		
 		this.head = n;
 		this.tail = n;
-		console.log(this.tail)
+		//console.log(this.tail)
 	}
 	else {
 		//console.log('getend 3');
@@ -34,28 +34,59 @@ getTail() {
 	return this.tail;
 }
 ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly) {
-	begin = this.Head;
+	var begin = this.head;
+	
 	if(RepeatYearly){
-		while (begin.getID()% 12 < IDstart){
-			begin = begin.getNext();
-		}
-		while (begin.getID()% 12 < IDend){
-			begin.setExtraPayment(ExtraPayment)
-			begin = begin.getNext();
+		//console.log('r');
+		while (begin != this.tail){
+			//console.log(begin.ID);
+			//console.log(begin.ID%12);
+			//console.log(IDend);
+			while (begin.ID% 12 < IDstart){
+				begin.setExtraPayment(0)
+				if(begin.End < 0){
+					this.tail = begin;
+					delete(begin.Next);
+					break
+				}else{
+					begin = begin.getNext();
+				}
+			}
+			while (begin.ID% 12 <= IDend){//console.log('o');
+				begin.setExtraPayment(ExtraPayment)
+				begin = begin.getNext();
+			}
+			while(begin.ID%12 > 0){
+				begin.setExtraPayment(0)
+				if(begin.End < 0){
+					this.tail = begin;
+					delete(begin.Next);
+					break
+				}else{
+					begin = begin.getNext();
+				}
+			}
 		}
 	}
 	else{
-		while (begin.getID() < IDstart){
+		//console.log('e');
+		while (begin.ID < IDstart){
+			
 			begin = begin.getNext();
 		}
-		while (begin.getID() < IDend){
+		while (begin.ID <= IDend){console.log('m');
 			begin.setExtraPayment(ExtraPayment)
 			begin = begin.getNext();
 		}
 	}
-	while (begin.getID() != this.tail){
+	while (begin != this.tail){
 		begin.setExtraPayment(0)
-		begin = begin.getNext();
+		if(begin.End < 0){
+			this.tail = begin;
+			delete(begin.Next);
+		}else{
+			begin = begin.getNext();
+		}
 	}
 	
 }

@@ -14,3 +14,19 @@ a {
 * {
   box-sizing: border-box;
 }
+.row {
+  display: flex; /* equal height of the children */
+  justify-content: left;
+  align-items: flex-start;
+}
+
+.col {
+  flex: 1; /* additionally, equal width */
+  max-width: 50%;
+  padding: 1em;
+ 
+}
+
+.bord {
+	border: solid;
+}

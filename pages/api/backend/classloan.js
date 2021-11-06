@@ -17,6 +17,7 @@ constructor(Ammount, Rate, Term) {
 		A = this.Months.getTail().getEnd();
 		this.Months.append(A);
 	}
+	
 }
 getMonthlyPayment(){
 	return this.MonthlyPayment;
@@ -29,6 +30,9 @@ getRate() {
 }
 getTerm() {
 	return this.Term;
+}
+getEnd(){
+	return(this.Months.getTail().getID());
 }
 ModifyMonth(IDstart, IDend,ExtraPayment,RepeatYearly) {
 	this.Months.ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly);
