@@ -15,7 +15,7 @@ class ModificationItem extends Component{
 		return (
 			<>
 				<p>{this.Start}</p>
-				<p>{this.SP}</P>
+				<p>{this.SP}</p>
 				<p>{this.MP}</p>
 				<p>{this.MI}</p>
 				<p>{this.MPR}</p>
