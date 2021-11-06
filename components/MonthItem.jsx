@@ -7,7 +7,7 @@ class ModificationItem extends Component{
 		this.Start = props.Start
 		this.SP = props.SP
 		this.MP = props.MP
-		this.MI = pros.MI
+		this.MI = props.MI
 		this.MPR = props.MPR
 		this.End = props.End
 	}
