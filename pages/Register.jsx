@@ -8,7 +8,7 @@ export default function Login(){
 	const Log = async event => {
 		event.preventDefault()
 		
-		const res = await fetch('/api/Login',
+		const res = await fetch('/api/Register',
 			{
 				body: JSON.stringify({
 					username: event.target.username.value, 

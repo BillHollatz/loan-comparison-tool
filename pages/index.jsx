@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import React, { Component } from "react"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ListOfLoans from '../components/List'
 //import List from '../components/List'
 import Link from 'next/link'
@@ -19,10 +19,28 @@ var List = dynamic(() => import('../components/List'),{
 
 
 
-
-
-
 export default function Home() {
+	const Log = async event => {
+		//event.preventDefault()
+		
+		const res = await fetch('/api/userData',
+			{
+				body: JSON.stringify({
+					result: 'gib'
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		)
+		const result = await res.json()
+		console.log(result)
+//return(result)
+	};
+useEffect(() => {
+	Log();
+});
   return (
 <>
 	
@@ -30,7 +48,7 @@ export default function Home() {
 			<title> Loan Tool</title>
 		</Head>
 		
-		<body>
+		
 			<h2>Loan comparison tool</h2>
 
 
@@ -51,7 +69,7 @@ export default function Home() {
 			<button onClick="window.location.href='/Register'">Register</button>
 			</Link>
 			
-		</body>
+		
 			
 			
 	
