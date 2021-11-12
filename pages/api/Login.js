@@ -29,7 +29,8 @@ get(child(ref(db), '/users/')).then((snapshot) => {
 		result = 'Login info not correct'
 	}
 	res.status(200).json({
-		result: result
+		result: result,
+		name: name
 		});
 }).catch((error) => {
 	console.error(error);

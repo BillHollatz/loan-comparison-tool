@@ -20,27 +20,17 @@ var List = dynamic(() => import('../components/List'),{
 
 
 export default function Home() {
-	const Log = async event => {
-		//event.preventDefault()
-		
-		const res = await fetch('/api/userData',
-			{
-				body: JSON.stringify({
-					result: 'gib'
-				}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			}
-		)
-		const result = await res.json()
-		console.log(result)
-//return(result)
-	};
-useEffect(() => {
-	Log();
-});
+	var list = <List></List>;
+	var login = <><h3>Login to save your loan comparisons</h3>
+			<Link href='Login'>
+			<button onClick="window.location.href='/Login'">Login</button>
+			</Link>
+			<Link href='Register'>
+			<button onClick="window.location.href='/Register'">Register</button>
+			</Link></>;
+	
+
+
   return (
 <>
 	
@@ -52,26 +42,11 @@ useEffect(() => {
 			<h2>Loan comparison tool</h2>
 
 
-			<List></List>
+			{list}
 				
-			
-			
-			
-			
-			
-			
-			
-			<h3>Login to save your loan comparisons</h3>
-			<Link href='Login'>
-			<button onClick="window.location.href='/Login'">Login</button>
-			</Link>
-			<Link href='Register'>
-			<button onClick="window.location.href='/Register'">Register</button>
-			</Link>
+			{login}
 			
 		
-			
-			
 	
 </>
   )

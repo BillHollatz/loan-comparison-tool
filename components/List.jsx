@@ -1,7 +1,8 @@
 import React, {Component} from "react";
+import { useState, useEffect } from 'react'
 import ReactDOM from "react-dom";
 import MonthItem from "./MonthItem";
-
+//import { useBeforeunload } from 'react-beforeunload';
 
 var i = 4;
 
@@ -341,6 +342,12 @@ class Lis extends Component {
 		super(props)
 		this.numLoans = 3;
 		this.ListOfLoans = [<LoanItem key='1' goog='1'/>,<LoanItem key='2' goog='2'/>,<LoanItem key='3' goog={this.numLoans}/>];
+		if (!(typeof props.user === 'undefined' || props.user === null)) {
+			this.username = props.user.name;
+			this.ListOfLoans = [];//props.user.result.data;
+		}
+		
+		
 		this.state = {
 			Loans: this.ListOfLoans
 		};
@@ -358,10 +365,104 @@ class Lis extends Component {
 			
 			
 		};
+		
+		this.Log = async event => {
+			//event.preventDefault()
+			
+				const res = await fetch('/api/userData',
+					{
+						body: JSON.stringify({
+							result: 'gib'
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						method: 'POST'
+					}
+				)
+				const result = await res.json()
+				console.log(result)
+				if (!(typeof result.user === 'undefined' || result.user === null)) {
+					this.username = result.user.name
+					//this.ListOfLoans = 
+				}
+			
+		
+			
+		};
+	}
+	
+	componentWillUnmount(){
+		var loans = []
+		for(var i=1; i<this.numLoans+1; i++){
+			var a = document.querySelectorAll('[goog="'+i.toString()+'"]');
+			console.log(a[0])
+			var Ammount = a[0].children[1].value
+			var Rate = a[0].children[3].value
+			var Term = a[0].children[5].value
+			var StartM = a[0].children[6].children[1].value
+			var StartY = a[0].children[6].children[3].value
+			var m = a[0].children[9].children[0].children[1]
+			var mods = []
+			for(var j=0; j<m.childElementCount; j++){
+				var extra = m.children[j].children[1].value
+				var SM = m.children[j].children[2].children[1].value
+				var SY = m.children[j].children[2].children[3].value
+				var EM = m.children[j].children[3].children[1].value
+				var EY = m.children[j].children[3].children[3].value
+				var repeat = m.children[j].children[5].checked
+				mods.push({
+					extra: extra,
+					SM: SM,
+					SY: SY,
+					EM: EM,
+					EY: EY,
+					repeat: repeat
+				})
+			}
+			loans.push({
+				Ammount: Ammount,
+				Rate: Rate,
+				Term: Term,
+				StartM: StartM,
+				StartY: StartY,
+				mods: mods
+			})
+		}
+			
+		alert("Hello! I am an alert box!!");
+		fetch('/api/firebase',
+			{
+				body: JSON.stringify({
+					data: loans,
+					username: this.username
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		)
+		/*
+		useEffect(() => {
+	  const unloadCallback = (event) => {
+		event.preventDefault();
+		
+		
+		
+		event.returnValue = "";
+		return "";
+	  };
+
+	  window.addEventListener("beforeunload", unloadCallback);
+	  return () => window.removeEventListener("beforeunload", unloadCallback);
+	}, []);*/
 	}
 	render(){
+		this.Log();
+		
 		return(
-			<ul>				
+			<ul >				
 				{this.state.Loans}
 				<button onClick={this.addLoan}>Add Loan</button>
 			</ul>
