@@ -238,7 +238,7 @@ class LoanItem extends Component {
 			this.LoanObject = result
 			console.log(this.LoanObject)
 			
-			this.ListOfMonths = [<div className='row'>
+			this.ListOfMonths = [<div className='row' key='0'>
 				<p className='tab'>Start value</p>
 				<p className='tab'>Standard Payment</p>
 				<p className='tab'>total payment</p>
