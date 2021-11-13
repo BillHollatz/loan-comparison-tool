@@ -14,12 +14,12 @@ class ModificationItem extends Component{
 	render() {
 		return (
 			<div className='row'>
-				<p className='bord'>{this.Start}</p>
-				<p className='bord'>{this.SP}</p>
-				<p className='bord'>{this.MP}</p>
-				<p className='bord'>{this.MI}</p>
-				<p className='bord'>{this.MPR}</p>
-				<p className='bord'>{this.End}</p>
+				<p className='tab'>{this.Start}</p>
+				<p className='tab'>{this.SP}</p>
+				<p className='tab'>{this.MP}</p>
+				<p className='tab'>{this.MI}</p>
+				<p className='tab'>{this.MPR}</p>
+				<p className='tab'>{this.End}</p>
 			</div>
 		)
 	}

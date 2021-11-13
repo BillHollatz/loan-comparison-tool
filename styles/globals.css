@@ -30,3 +30,8 @@ a {
 .bord {
 	border: solid;
 }
+
+.tab {
+	border: solid;
+	width: 1000px;
+}

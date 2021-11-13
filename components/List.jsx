@@ -9,7 +9,7 @@ var i = 4;
 class ModificationItem extends Component{
 	constructor(props){
 		super(props)
-		//console.log(props)
+		console.log(props)
 		this.Id = props.key;
 		this.Amount=props.Amount;
 		this.SM=props.SM;
@@ -79,17 +79,46 @@ class ModificationItem extends Component{
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
+		console.log(props);
 		this.Id = props.goog;
-		//console.log(props);
-		this.numMods = 0;
+		if(typeof props.data === 'undefined' || props.data === null){
+			this.data = {
+				Ammount: 0,
+				Rate: 0,
+				Term: 0,
+				StartM: 0,
+				StartY: 0,
+				mods: []
+			}
+			this.ModsDisplayed = false
+		}else{
+			this.data = props.data;
+			this.ModsDisplayed = true
+		}			
+		this.listOfModifications = []
+		for(var i in this.data.mods){
+			var mod = this.data.mods[i]
+			console.log(mod)
+			this.listOfModifications.push(<ModificationItem 
+						key={this.numMods} 
+						Amount={mod.extra}
+						SM={mod.SM}
+						SY={mod.SY}
+						EM={mod.EM}
+						EY={mod.EY}
+						Repeat={mod.repeat}
+					/>)
+		}
+
+		
+		this.numMods = this.listOfModifications.length;
 		this.button = <button goog='a' type="submit" onClick={this.calc}>Calculate</button>
 		this.addMod = <button onClick={this.addModification}>Add Extra Payment</button>
 		this.state = {
 			monthly: null ,
-			Mods: null
+			Mods: this.listOfModifications
 		};
 		this.LoanObject = null;
-		this.listOfModifications = []
 		this.LMODS = []
 		this.ListOfMonths = []
 		this.addModification = async event =>{
@@ -209,10 +238,18 @@ class LoanItem extends Component {
 			this.LoanObject = result
 			console.log(this.LoanObject)
 			
-			this.ListOfMonths = []
+			this.ListOfMonths = [<div className='row'>
+				<p className='tab'>Start value</p>
+				<p className='tab'>Standard Payment</p>
+				<p className='tab'>total payment</p>
+				<p className='tab'>Intrest</p>
+				<p className='tab'>Principal paid</p>
+				<p className='tab'>end value</p>
+			</div>]
 			var iter = this.LoanObject.Months.head
 			//console.log(iter.Start.toString())
 			while(iter != null){
+				console.log(iter)
 				this.ListOfMonths.push(
 					<MonthItem 
 						Start= {iter.Start.toString()} 
@@ -282,16 +319,16 @@ class LoanItem extends Component {
 			<form onSubmit={this.calc} goog={this.Id}  className="list">
 			
 				<label htmlFor="Loan amount">Loan amount $</label>
-				<input id="Amount" name="Amount" type="number"  required />
+				<input id="Amount" name="Amount" type="number" defaultValue={this.data.Ammount} required />
 				
 				<label htmlFor="Intrest rate">Intrest rate</label>
-				<input id="Rate" type="number" step="any" required />
+				<input id="Rate" type="number" step="any" defaultValue={this.data.Rate} required />
 				
 				<label htmlFor="Loan term">Loan term length in years</label>
-				<input id="Term" type="number"  required />
+				<input id="Term" type="number" defaultValue={this.data.Term} required />
 				<ul>
 					<label htmlFor="Loan start">Loan start month</label>
-					<select id="month"  required>
+					<select id="month" defaultValue={this.data.StartM} required>
 						<option value="0">January</option>
 						<option value="1">Febuary</option>
 						<option value="2">March</option>
@@ -306,7 +343,7 @@ class LoanItem extends Component {
 						<option value="11">December</option>
 					</select>
 					<label htmlFor="Loan start">year</label>
-					<input id="year" type="number"  required />
+					<input id="year" type="number" defaultValue={this.data.StartY} required />
 				</ul>
 				
 				
@@ -342,10 +379,7 @@ class Lis extends Component {
 		super(props)
 		this.numLoans = 3;
 		this.ListOfLoans = [<LoanItem key='1' goog='1'/>,<LoanItem key='2' goog='2'/>,<LoanItem key='3' goog={this.numLoans}/>];
-		if (!(typeof props.user === 'undefined' || props.user === null)) {
-			this.username = props.user.name;
-			this.ListOfLoans = [];//props.user.result.data;
-		}
+		
 		
 		
 		this.state = {
@@ -384,7 +418,20 @@ class Lis extends Component {
 				console.log(result)
 				if (!(typeof result.user === 'undefined' || result.user === null)) {
 					this.username = result.user.name
-					//this.ListOfLoans = 
+					this.ListOfLoans = []
+					var loans = result.user.result.data
+					console.log(loans)
+					for(var loan in loans){
+						console.log(loans[loan])
+						this.ListOfLoans.push(<LoanItem 
+						key={loan+1}
+						goog={(parseInt(loan)+1).toString()}
+						data = {loans[loan]}
+						/>)
+					}
+					this.setState({
+						Loans: this.ListOfLoans
+					})
 				}
 			
 		
@@ -459,7 +506,9 @@ class Lis extends Component {
 	}, []);*/
 	}
 	render(){
-		this.Log();
+		if ((typeof this.username === 'undefined' || this.username === null)) {
+			this.Log();
+		}
 		
 		return(
 			<ul >				
