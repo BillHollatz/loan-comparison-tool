@@ -136,8 +136,10 @@ class LoanItem extends Component {
 						Repeat={0}
 					/>)
 			var m = this.state.monthly
+			var t = this.state.total
 			this.setState({
 				monthly: m ,
+				total: t,
 				Mods: this.listOfModifications
 			})
 		};
@@ -164,8 +166,10 @@ class LoanItem extends Component {
 				}
 				var m = this.state.monthly
 				var M = this.state.Months
+				var t = this.state.total
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: null,
 					Months: M
 				})
@@ -187,8 +191,10 @@ class LoanItem extends Component {
 				console.log(this.listOfModifications)
 				var m = this.state.monthly
 				var M = this.state.Months
+				var t = this.state.total
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: this.listOfModifications,
 					Months: M
 				})
@@ -241,20 +247,32 @@ class LoanItem extends Component {
 			this.ListOfMonths = [<div className='row' key='0'>
 				<p className='tab'>Start value</p>
 				<p className='tab'>Standard Payment</p>
-				<p className='tab'>total payment</p>
+				<p className='tab'>Extra Payment</p>
 				<p className='tab'>Intrest</p>
 				<p className='tab'>Principal paid</p>
 				<p className='tab'>end value</p>
 			</div>]
 			var iter = this.LoanObject.Months.head
 			//console.log(iter.Start.toString())
-			while(iter != null){
+			var totalPaid = 0;
+			while(iter != null && iter.Start > 0){
 				console.log(iter)
+				if(iter.End <0){
+					totalPaid = totalPaid + iter.Start +iter.MonthlyInterest
+					iter.MonthlyPayment = iter.Start
+					if(!(iter.Start > iter.StandardPayment)){
+						iter.StandardPayment = iter.Start
+					}
+					iter.End = 0
+				}
+				else{
+					totalPaid = totalPaid + iter.MonthlyPayment+iter.MonthlyInterest
+				}
 				this.ListOfMonths.push(
 					<MonthItem 
 						Start= {iter.Start.toString()} 
 						SP = {iter.StandardPayment.toString()} 
-						MP = {iter.MonthlyPayment.toString()} 
+						MP = {(iter.MonthlyPayment-iter.StandardPayment).toString()} 
 						MI = {iter.MonthlyInterest.toString()} 
 						MPR={iter.MonthlyPrincipal.toString()} 
 						End={iter.End.toString()}
@@ -265,16 +283,18 @@ class LoanItem extends Component {
 			
 				var m= "Monthly Payment: "+this.LoanObject.MonthlyPayment.toString()
 				var M= this.state.Mods
-				
+				var t= " Total Paid: "+totalPaid
 			
 			if(this.MonthsDisplayed){
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: M,
 					Months: null
 				})
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: M,
 					Months: this.ListOfMonths
 				})
@@ -282,6 +302,7 @@ class LoanItem extends Component {
 				
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: M,
 					Months: null
 				})
@@ -290,21 +311,23 @@ class LoanItem extends Component {
 		
 		this.toggleMonthList = async event =>{
 			event.preventDefault()
-			
+			var m = this.state.monthly
+		    var M = this.state.Mods
+			var t = this.state.total
 			this.MonthsDisplayed = !this.MonthsDisplayed
 			if(this.MonthsDisplayed){
-				var m = this.state.monthly
-				var M = this.state.Mods
+				
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: M,
 					Months: this.ListOfMonths
 				})
 			}else{
-				var m = this.state.monthly
-				var M = this.state.Mods
+				
 				this.setState({
 					monthly: m,
+					total: t,
 					Mods: M,
 					Months: null
 				})
@@ -351,7 +374,7 @@ class LoanItem extends Component {
 				
 				
 				
-				<label>{this.state.monthly}</label>
+				<label>{this.state.monthly}{this.state.total}</label>
 				<div className="row">
 					<div id="mods" className="col" >
 						<button onClick={this.toggleMods}>Show/Hide Extra Payments</button>
@@ -415,14 +438,14 @@ class Lis extends Component {
 					}
 				)
 				const result = await res.json()
-				console.log(result)
+				//console.log(result)
 				if (!(typeof result.user === 'undefined' || result.user === null)) {
 					this.username = result.user.name
 					this.ListOfLoans = []
 					var loans = result.user.result.data
-					console.log(loans)
+					//console.log(loans)
 					for(var loan in loans){
-						console.log(loans[loan])
+						//console.log(loans[loan])
 						this.ListOfLoans.push(<LoanItem 
 						key={loan+1}
 						goog={(parseInt(loan)+1).toString()}
@@ -437,73 +460,75 @@ class Lis extends Component {
 		
 			
 		};
-	}
 	
-	componentWillUnmount(){
-		var loans = []
-		for(var i=1; i<this.numLoans+1; i++){
-			var a = document.querySelectorAll('[goog="'+i.toString()+'"]');
-			console.log(a[0])
-			var Ammount = a[0].children[1].value
-			var Rate = a[0].children[3].value
-			var Term = a[0].children[5].value
-			var StartM = a[0].children[6].children[1].value
-			var StartY = a[0].children[6].children[3].value
-			var m = a[0].children[9].children[0].children[1]
-			var mods = []
-			for(var j=0; j<m.childElementCount; j++){
-				var extra = m.children[j].children[1].value
-				var SM = m.children[j].children[2].children[1].value
-				var SY = m.children[j].children[2].children[3].value
-				var EM = m.children[j].children[3].children[1].value
-				var EY = m.children[j].children[3].children[3].value
-				var repeat = m.children[j].children[5].checked
-				mods.push({
-					extra: extra,
-					SM: SM,
-					SY: SY,
-					EM: EM,
-					EY: EY,
-					repeat: repeat
+	
+		this.save = async event =>{
+			var loans = []
+			for(var i=1; i<this.numLoans+1; i++){
+				var a = document.querySelectorAll('[goog="'+i.toString()+'"]');
+				//console.log(a[0])
+				//a[0].toggleMods
+				var Ammount = a[0].children[1].value
+				var Rate = a[0].children[3].value
+				var Term = a[0].children[5].value
+				var StartM = a[0].children[6].children[1].value
+				var StartY = a[0].children[6].children[3].value
+				var m = a[0].children[9].children[0].children[1]
+				var mods = []
+				for(var j=0; j<m.childElementCount; j++){
+					var extra = m.children[j].children[1].value
+					var SM = m.children[j].children[2].children[1].value
+					var SY = m.children[j].children[2].children[3].value
+					var EM = m.children[j].children[3].children[1].value
+					var EY = m.children[j].children[3].children[3].value
+					var repeat = m.children[j].children[5].checked
+					mods.push({
+						extra: extra,
+						SM: SM,
+						SY: SY,
+						EM: EM,
+						EY: EY,
+						repeat: repeat
+					})
+				}
+				loans.push({
+					Ammount: Ammount,
+					Rate: Rate,
+					Term: Term,
+					StartM: StartM,
+					StartY: StartY,
+					mods: mods
 				})
 			}
-			loans.push({
-				Ammount: Ammount,
-				Rate: Rate,
-				Term: Term,
-				StartM: StartM,
-				StartY: StartY,
-				mods: mods
-			})
-		}
+				
+			//alert("Hello! I am an alert box!!");
+			fetch('/api/firebase',
+				{
+					body: JSON.stringify({
+						data: loans,
+						username: this.username
+					}),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					method: 'POST'
+				}
+			)
+			/*
+			useEffect(() => {
+		  const unloadCallback = (event) => {
+			event.preventDefault();
 			
-		alert("Hello! I am an alert box!!");
-		fetch('/api/firebase',
-			{
-				body: JSON.stringify({
-					data: loans,
-					username: this.username
-				}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			}
-		)
-		/*
-		useEffect(() => {
-	  const unloadCallback = (event) => {
-		event.preventDefault();
-		
-		
-		
-		event.returnValue = "";
-		return "";
-	  };
+			
+			
+			event.returnValue = "";
+			return "";
+		  };
 
-	  window.addEventListener("beforeunload", unloadCallback);
-	  return () => window.removeEventListener("beforeunload", unloadCallback);
-	}, []);*/
+		  window.addEventListener("beforeunload", unloadCallback);
+		  return () => window.removeEventListener("beforeunload", unloadCallback);
+		}, []);*/
+		}
 	}
 	render(){
 		if ((typeof this.username === 'undefined' || this.username === null)) {
@@ -514,6 +539,7 @@ class Lis extends Component {
 			<ul >				
 				{this.state.Loans}
 				<button onClick={this.addLoan}>Add Loan</button>
+				<button onClick={this.save}>Save Loans</button>
 			</ul>
 		)
 	}

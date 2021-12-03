@@ -22,6 +22,20 @@ export default function Login(){
 		)
 		const result = await res.json()
 		console.log(result)
+		const res2 = await fetch('/api/userData',
+			{
+				body: JSON.stringify({
+					result: result
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		)
+		const result2 = await res2.json()
+		console.log(result2)
+		window.location.href='/'
 	}
 	
 	return(

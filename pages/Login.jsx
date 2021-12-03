@@ -21,7 +21,7 @@ export default function Login(){
 			}
 		)
 		const result = await res.json()
-		//console.log(result)
+		console.log(result)
 		const res2 = await fetch('/api/userData',
 			{
 				body: JSON.stringify({
