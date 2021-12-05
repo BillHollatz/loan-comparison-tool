@@ -254,9 +254,9 @@ class LoanItem extends Component {
 				<p className='tab'>Start value</p>
 				<p className='tab'>Standard Payment</p>
 				<p className='tab'>Extra Payment</p>
-				<p className='tab'>Intrest</p>
+				<p className='tab'>Inetrest</p>
 				<p className='tab'>Principal paid</p>
-				<p className='tab'>end value</p>
+				<p className='tab'>End value</p>
 			</div>]
 			var iter = this.LoanObject.Months.head
 			//////console.log(iter.Start.toString())
