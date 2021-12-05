@@ -208,14 +208,20 @@ class LoanItem extends Component {
 				var MODS = event.target.children[9].children[0].children[1]
 				//////console.log(MODS)
 				for (let i = 0; i<MODS.childElementCount; i++){
+					var s =MODS.children[i].children[2].children[3].value
+					var e = MODS.children[i].children[3].children[3].value
+					var r =MODS.children[i].children[5].checked
+					if (s!=e){
+						r = false
+					}
 					this.LMODS.push({
 						key : i,
 						Amount: MODS.children[i].children[1].value,
 						SM : MODS.children[i].children[2].children[1].value,
-						SY : MODS.children[i].children[2].children[3].value,
+						SY : s,
 						EM : MODS.children[i].children[3].children[1].value,
-						EY : MODS.children[i].children[3].children[3].value,
-						Repeat : MODS.children[i].children[5].checked
+						EY : e,
+						Repeat : r
 					})
 				}
 			}

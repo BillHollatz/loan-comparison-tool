@@ -51,6 +51,9 @@ setExtraPayment(extra) {
 		this.Next.setStart(this.End);
 	}
 }
+calcIntrest(C){
+	this.MonthlyInterest = this.Start*C;
+}
 getExtraPayment() {
 	return this.ExtraPayment;
 }

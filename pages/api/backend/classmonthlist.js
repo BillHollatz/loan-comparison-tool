@@ -54,10 +54,13 @@ ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly) {
 			}
 			while (begin.ID% 12 <= IDend){//////console.log('o');
 				begin.setExtraPayment(ExtraPayment)
+				begin.calcIntrest(this.C)
 				begin = begin.getNext();
+				
 			}
 			while(begin.ID%12 > 0){
 				begin.setExtraPayment(0)
+				begin.calcIntrest(this.C)
 				if(begin.End < 0){
 					this.tail = begin;
 					delete(begin.Next);
@@ -76,11 +79,13 @@ ModifyPayment(IDstart, IDend,ExtraPayment,RepeatYearly) {
 		}
 		while (begin.ID <= IDend){////console.log('m');
 			begin.setExtraPayment(ExtraPayment)
+			begin.calcIntrest(this.C)
 			begin = begin.getNext();
 		}
 	}
 	while (begin != this.tail){
 		begin.setExtraPayment(0)
+		begin.calcIntrest(this.C)
 		if(begin.End < 0){
 			this.tail = begin;
 			delete(begin.Next);
