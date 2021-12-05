@@ -46,7 +46,7 @@ get(child(ref(db),'numUsers')).then((snapshot) => {
 		//result = 'b';//snapshot.child(name);
 	}
 	else{
-		console.log('no num users');
+		////console.log('no num users');
 		result = 'no num users'
 	}
 	

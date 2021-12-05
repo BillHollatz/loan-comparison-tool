@@ -10,7 +10,7 @@ export default function handeler(req,res) {
 		data = req.body.result;
 		res.status(200).json({re: 'OK'});
 	}
-	console.log(data)
+	////console.log(data)
 	//res.status(200).json(req.body.result);
 }
 

@@ -45,6 +45,7 @@ getPrev() {
 setExtraPayment(extra) {
 	this.ExtraPayment = this.ExtraPayment + extra;
 	this.MonthlyPayment = this.MonthlyPayment + extra;
+	this.MonthlyPrincipal = this.MonthlyPrincipal + extra;
 	this.End = this.Start - this.MonthlyPayment;
 	if(this.Next != null){
 		this.Next.setStart(this.End);

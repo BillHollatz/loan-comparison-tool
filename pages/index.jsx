@@ -11,7 +11,7 @@ import Link from 'next/link'
 //import Loan from '../back end/classloan'
 
 //var x = new Loan(1, 2, 3)
-//console.log(x)
+//////console.log(x)
 
 var List = dynamic(() => import('../components/List'),{
 	ssr: false

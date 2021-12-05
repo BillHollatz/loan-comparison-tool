@@ -9,7 +9,7 @@ var i = 4;
 class ModificationItem extends Component{
 	constructor(props){
 		super(props)
-		console.log(props)
+		//////console.log(props)
 		this.Id = props.key;
 		this.Amount=props.Amount;
 		this.SM=props.SM;
@@ -79,7 +79,7 @@ class ModificationItem extends Component{
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
-		console.log(props);
+		//////console.log(props);
 		this.Id = props.goog;
 		if(typeof props.data === 'undefined' || props.data === null){
 			this.data = {
@@ -98,7 +98,7 @@ class LoanItem extends Component {
 		this.listOfModifications = []
 		for(var i in this.data.mods){
 			var mod = this.data.mods[i]
-			console.log(mod)
+			//////console.log(mod)
 			this.listOfModifications.push(<ModificationItem 
 						key={this.numMods} 
 						Amount={mod.extra}
@@ -150,9 +150,9 @@ class LoanItem extends Component {
 			
 			if(this.ModsDisplayed){
 				this.LMODS = []
-				//console.log(event.target.nextElementSibling)
+				//////console.log(event.target.nextElementSibling)
 				var MODS = event.target.nextElementSibling
-				//console.log(MODS)
+				//////console.log(MODS)
 				for (let i = 0; i<MODS.childElementCount; i++){
 					this.LMODS.push({
 						key : i,
@@ -188,7 +188,7 @@ class LoanItem extends Component {
 						Repeat={this.LMODS[i].Repeat}
 					/>)
 				}
-				console.log(this.listOfModifications)
+				//////console.log(this.listOfModifications)
 				var m = this.state.monthly
 				var M = this.state.Months
 				var t = this.state.total
@@ -206,7 +206,7 @@ class LoanItem extends Component {
 			if (this.ModsDisplayed){
 				this.LMODS = []
 				var MODS = event.target.children[9].children[0].children[1]
-				console.log(MODS)
+				//////console.log(MODS)
 				for (let i = 0; i<MODS.childElementCount; i++){
 					this.LMODS.push({
 						key : i,
@@ -219,7 +219,7 @@ class LoanItem extends Component {
 					})
 				}
 			}
-			console.log(this.LMODS)
+			//////console.log(this.LMODS)
 			
 			const res = await fetch('/api/LoanInputs',
 				{
@@ -242,7 +242,7 @@ class LoanItem extends Component {
 			
 			const result = await res.json()
 			this.LoanObject = result
-			console.log(this.LoanObject)
+			//////console.log(this.LoanObject)
 			
 			this.ListOfMonths = [<div className='row' key='0'>
 				<p className='tab'>Start value</p>
@@ -253,15 +253,16 @@ class LoanItem extends Component {
 				<p className='tab'>end value</p>
 			</div>]
 			var iter = this.LoanObject.Months.head
-			//console.log(iter.Start.toString())
+			//////console.log(iter.Start.toString())
 			var totalPaid = 0;
 			while(iter != null && iter.Start > 0){
-				console.log(iter)
+				//////console.log(iter)
 				if(iter.End <0){
 					totalPaid = totalPaid + iter.Start +iter.MonthlyInterest
-					iter.MonthlyPayment = iter.Start
+					iter.MonthlyPayment = iter.Start + iter.MonthlyInterest
+					iter.MonthlyPrincipal = iter.Start
 					if(!(iter.Start > iter.StandardPayment)){
-						iter.StandardPayment = iter.Start
+						iter.StandardPayment = iter.Start + iter.MonthlyInterest
 					}
 					iter.End = 0
 				}
@@ -412,7 +413,7 @@ class Lis extends Component {
 			event.preventDefault()
 			
 			this.numLoans = this.numLoans + 1
-			//console.log(this.numLoans)
+			//////console.log(this.numLoans)
 			this.ListOfLoans.push(<LoanItem key={this.numLoans} goog={this.numLoans.toString()}/>)
 			
 			var x = [...this.ListOfLoans]
@@ -438,14 +439,14 @@ class Lis extends Component {
 					}
 				)
 				const result = await res.json()
-				//console.log(result)
+				//////console.log(result)
 				if (!(typeof result.user === 'undefined' || result.user === null)) {
 					this.username = result.user.name
 					this.ListOfLoans = []
 					var loans = result.user.result.data
-					//console.log(loans)
+					//////console.log(loans)
 					for(var loan in loans){
-						//console.log(loans[loan])
+						//////console.log(loans[loan])
 						this.ListOfLoans.push(<LoanItem 
 						key={loan+1}
 						goog={(parseInt(loan)+1).toString()}
@@ -466,7 +467,7 @@ class Lis extends Component {
 			var loans = []
 			for(var i=1; i<this.numLoans+1; i++){
 				var a = document.querySelectorAll('[goog="'+i.toString()+'"]');
-				//console.log(a[0])
+				//////console.log(a[0])
 				//a[0].toggleMods
 				var Ammount = a[0].children[1].value
 				var Rate = a[0].children[3].value

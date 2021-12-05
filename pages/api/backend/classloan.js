@@ -11,9 +11,9 @@ constructor(Ammount, Rate, Term) {
 	this.Months = new MonthList(this.Ammount,this.MonthlyPayment,C)
 	var A = this.Ammount;
 	this.Months.append(A);
-	//console.log('getend 1')
+	//////console.log('getend 1')
 	while(this.Months.getTail().getEnd() > 0){
-		//console.log('getend 2')
+		//////console.log('getend 2')
 		A = this.Months.getTail().getEnd();
 		this.Months.append(A);
 	}
