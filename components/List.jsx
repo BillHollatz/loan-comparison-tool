@@ -76,12 +76,13 @@ class ModificationItem extends Component{
 	}
 }
 
+
 class LoanItem extends Component {
 	constructor(props){
 		super(props)
 		//////console.log(props);
 		this.Id = props.goog;
-		if(typeof props.data === 'undefined' || props.data === null){
+		if(typeof props.data === 'undefined' || props.data === null){//start a loan with default values if none are passed in
 			this.data = {
 				Ammount: 0,
 				Rate: 0,
@@ -121,6 +122,8 @@ class LoanItem extends Component {
 		this.LoanObject = null;
 		this.LMODS = []
 		this.ListOfMonths = []
+		
+		//adds a modification field to the loan object
 		this.addModification = async event =>{
 			event.preventDefault()
 			this.ModsDisplayed = true
@@ -143,6 +146,8 @@ class LoanItem extends Component {
 				Mods: this.listOfModifications
 			})
 		};
+		
+		//hides or unhides the list of modifications
 		this.toggleMods = async event =>{
 			event.preventDefault()
 			
@@ -151,8 +156,12 @@ class LoanItem extends Component {
 			if(this.ModsDisplayed){
 				this.LMODS = []
 				//////console.log(event.target.nextElementSibling)
+				
+				//list of mods is the next element after the toggle button
 				var MODS = event.target.nextElementSibling
 				//////console.log(MODS)
+				
+				//collect the modification data for storage
 				for (let i = 0; i<MODS.childElementCount; i++){
 					this.LMODS.push({
 						key : i,
@@ -177,7 +186,7 @@ class LoanItem extends Component {
 				this.listOfModifications = []
 				var len = this.LMODS.length
 				
-				for (let i = 0; i<len; i++){
+				for (let i = 0; i<len; i++){//for each modification saved, send the data to a new modification field on the page
 					this.listOfModifications.push(<ModificationItem 
 						key={i} 
 						Amount={this.LMODS[i].Amount}
@@ -201,8 +210,13 @@ class LoanItem extends Component {
 			}
 			this.ModsDisplayed = !this.ModsDisplayed
 		}
+		
+		
+		//sends loan data to the back end to calculate monthly payment, total paid and the detailed list of months
 		this.calc = async event => {
 			event.preventDefault()
+			
+			
 			if (this.ModsDisplayed){
 				this.LMODS = []
 				var MODS = event.target.children[9].children[0].children[1]
@@ -226,6 +240,7 @@ class LoanItem extends Component {
 				}
 			}
 			//////console.log(this.LMODS)
+			
 			
 			const res = await fetch('/api/LoanInputs',
 				{
@@ -260,21 +275,26 @@ class LoanItem extends Component {
 			</div>]
 			var iter = this.LoanObject.Months.head
 			//////console.log(iter.Start.toString())
+			
+			//for each month in the loan term, increment the total paid
 			var totalPaid = 0;
 			while(iter != null && iter.Start > 0){
-				//////console.log(iter)
+				//if the end of the loan is reached remove negative values on the list of months, and make sure the standard payment is only enough to finish the loan
 				if(iter.End <0){
 					totalPaid = totalPaid + iter.Start +iter.MonthlyInterest
 					iter.MonthlyPayment = iter.Start + iter.MonthlyInterest
 					iter.MonthlyPrincipal = iter.Start
+					//if the last month is not paid off by the standard payment, the extra payment for this month should only be just enough to end the loan
 					if(!(iter.Start > iter.StandardPayment)){
 						iter.StandardPayment = iter.Start + iter.MonthlyInterest
 					}
 					iter.End = 0
 				}
-				else{
+				else{//if the end of the loan is not reached, increment the total paid
 					totalPaid = totalPaid + iter.MonthlyPayment+iter.MonthlyInterest
 				}
+				
+				//push the above calculated values to the detailed list of monthly payments
 				this.ListOfMonths.push(
 					<MonthItem 
 						Start= {iter.Start.toString()} 
@@ -288,6 +308,7 @@ class LoanItem extends Component {
 				iter = iter.Next
 			}
 			
+			//update the text displaying the standard monthly payment and total paid
 				var m= "Monthly Payment: "+this.LoanObject.MonthlyPayment.toString()
 				var M= this.state.Mods
 				var t= " Total Paid: "+totalPaid
@@ -316,6 +337,7 @@ class LoanItem extends Component {
 			}
 		};
 		
+		//hide or unhide the detailed list of monthly payments
 		this.toggleMonthList = async event =>{
 			event.preventDefault()
 			var m = this.state.monthly
@@ -398,12 +420,12 @@ class LoanItem extends Component {
 				
 		
 			</form>
-			</div>
+		</div>
 		);
 	}
 }
 
-
+//Lis component, contains the list of loan objects to be displayed on the page
 class Lis extends Component {
 	constructor(props){
 		super(props)
@@ -415,6 +437,8 @@ class Lis extends Component {
 		this.state = {
 			Loans: this.ListOfLoans
 		};
+		
+		//Creates a new loan object and adds it to the list of loans
 		this.addLoan = async event =>{
 			event.preventDefault()
 			
@@ -430,6 +454,8 @@ class Lis extends Component {
 			
 		};
 		
+		//checks the userData api for the login information of a user
+		//updates the list of loans if there is a user logged in
 		this.Log = async event => {
 			//event.preventDefault()
 			
@@ -468,13 +494,15 @@ class Lis extends Component {
 			
 		};
 	
-	
+		//save loans button, sends loan data to the database
 		this.save = async event =>{
 			var loans = []
 			for(var i=1; i<this.numLoans+1; i++){
-				var a = document.querySelectorAll('[goog="'+i.toString()+'"]');
+				var a = document.querySelectorAll('[goog="'+i.toString()+'"]');//search the document for the loan of number i
 				//////console.log(a[0])
 				//a[0].toggleMods
+				
+				//each piece of data is refrenced as children of the loan object
 				var Ammount = a[0].children[1].value
 				var Rate = a[0].children[3].value
 				var Term = a[0].children[5].value
@@ -509,6 +537,8 @@ class Lis extends Component {
 			}
 				
 			//alert("Hello! I am an alert box!!");
+			
+			//send the data collected from all the loans to the api
 			fetch('/api/firebase',
 				{
 					body: JSON.stringify({
@@ -538,6 +568,7 @@ class Lis extends Component {
 		}
 	}
 	render(){
+		//check if there is a logged in user
 		if ((typeof this.username === 'undefined' || this.username === null)) {
 			this.Log();
 		}
